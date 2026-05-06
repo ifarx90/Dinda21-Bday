@@ -2,7 +2,7 @@
 // WEB AUDIO — Cinematic ambient music
 // ============================================================
 // ---- AUDIO FILE ----
-const bgAudio = new Audio('https://drive.google.com/uc?export=download&id=1xm0GxcLNgvIl9K-maswI9HTWAN0UASp-');
+const bgAudio = new Audio('https://files.catbox.moe/7nmb93.mp3');
 bgAudio.loop = true;
 bgAudio.volume = 0.3;
 
@@ -180,14 +180,15 @@ function showPinArea() {
       document.getElementById("paper").style.transition = "opacity 0.5s ease";
       document.getElementById("paper").style.opacity = "0";
 
-      setTimeout(() => {
-        const pinOverlay = document.getElementById("pin-overlay");
-        pinOverlay.classList.remove("hidden");
-        setTimeout(() => pinOverlay.classList.add("show"), 30);
-        document.addEventListener("keydown", onPinKeydown);
-        const isMobile = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
-        if (isMobile) setTimeout(() => showNumpad(), 400);
-      }, 500);
+    setTimeout(() => {
+  const pinOverlay = document.getElementById('pin-overlay');
+  pinOverlay.style.display = 'flex';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    pinOverlay.classList.add('show');
+  }));
+  document.addEventListener('keydown', onPinKeydown);
+  showNumpad();
+}, 500);
     },
     { once: true },
   );
@@ -223,25 +224,26 @@ function onPinClick(e) {
 
 // Virtual numpad — muncul otomatis di mobile
 function showNumpad() {
-  const existing = document.getElementById("numpad");
+  const existing = document.getElementById('numpad');
   if (existing) return;
 
-  const numpad = document.createElement("div");
-  numpad.id = "numpad";
-  const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "←", "0", "✓"];
-  keys.forEach((k) => {
-    const btn = document.createElement("button");
-    btn.className = "numpad-key";
+  const numpad = document.createElement('div');
+  numpad.id = 'numpad';
+  const keys = ['1','2','3','4','5','6','7','8','9','←','0','✓'];
+  keys.forEach(k => {
+    const btn = document.createElement('button');
+    btn.className = 'numpad-key';
     btn.textContent = k;
-    btn.addEventListener("click", () => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
       if (pinLocked) return;
-      if (k === "←") {
+      if (k === '←') {
         if (pinInput.length > 0) {
           pinInput = pinInput.slice(0, -1);
           updatePinBoxes();
           clearPinError();
         }
-      } else if (k === "✓") {
+      } else if (k === '✓') {
         if (pinInput.length === 4) validatePin();
       } else {
         if (pinInput.length < 4) {
@@ -253,7 +255,7 @@ function showNumpad() {
     });
     numpad.appendChild(btn);
   });
-  document.getElementById("pin-card").appendChild(numpad);
+  document.getElementById('pin-card').appendChild(numpad);
 }
 
 function updatePinBoxes() {

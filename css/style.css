@@ -29,8 +29,9 @@ html, body {
 }
 
 @media (hover: none) and (pointer: coarse) {
-  html, body { cursor: auto; }
-  #cursor { display: none; }
+  html, body { cursor: auto !important; }
+  #cursor { display: none !important; }
+  * { cursor: auto !important; }
 }
 
 /* ============================================================
