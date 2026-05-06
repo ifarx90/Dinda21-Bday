@@ -2,7 +2,7 @@
 // WEB AUDIO — Cinematic ambient music
 // ============================================================
 // ---- AUDIO FILE ----
-const bgAudio = new Audio("../audio/CIBH.mp3");
+const bgAudio = new Audio('https://drive.google.com/uc?export=download&id=1xm0GxcLNgvIl9K-maswI9HTWAN0UASp-');
 bgAudio.loop = true;
 bgAudio.volume = 0.3;
 
@@ -171,6 +171,8 @@ function showPinArea() {
   const btnArea = document.getElementById("reveal-btn-area");
   btnArea.classList.remove("hidden");
   setTimeout(() => btnArea.classList.add("show"), 50);
+  const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  if (isMobile) setTimeout(() => showNumpad(), 400);
   document.getElementById("reveal-btn").addEventListener(
     "click",
     () => {
