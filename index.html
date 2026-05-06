@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selamat Ulang Tahun, Dinda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+
+<!-- First click overlay -->
+<div id="first-overlay">
+  <div id="first-prompt">
+    <div id="first-icon">✉</div>
+    <div id="first-text">aku ada sesuatu buat kamu</div>
+    <div id="first-sub">klik untuk membuka</div>
+  </div>
+</div>
+
+<!-- Transition overlay -->
+<div id="transition-overlay"></div>
+
+<!-- Music button (shown in scene 2) -->
+<button id="music-btn" aria-label="Toggle music">
+  <svg id="music-icon-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 4l12 8-12 8V4z"/></svg>
+  <svg id="music-icon-pause" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+</button>
+
+<!-- ============================================================
+     SCENE 1 — SURAT
+============================================================ -->
+<div class="scene" id="scene1">
+  <div id="paper">
+  <div id="paper-header">
+    <span id="paper-stamp">07 · 05 · 2026</span>
+  </div>
+  <div id="typing-container"></div>
+  <div id="reveal-btn-area" class="hidden">
+    <button id="reveal-btn">mau hadiah? pencet aku</button>
+  </div>
+  <div id="paper-footer">
+    <span id="paper-from">— Mas R</span>
+  </div>
+</div>
+  <div id="pin-overlay" class="hidden">
+    <div id="pin-card">
+      <div id="pin-label">silahkan masukan pin</div>
+      <div id="pin-boxes">
+        <div class="pin-box" data-index="0"></div>
+        <div class="pin-box" data-index="1"></div>
+        <div class="pin-box" data-index="2"></div>
+        <div class="pin-box" data-index="3"></div>
+      </div>
+      <div id="pin-error"></div>
+    </div>
+  </div>
+  <!-- <button id="skip-btn">skip</button> -->
+</div>
+
+<!-- ============================================================
+     SCENE 2 — BURST
+============================================================ -->
+<div class="scene hidden" id="scene2">
+  <canvas id="fx-canvas"></canvas>
+  <div id="parallax-layer"></div>
+ <div id="year-watermark">21</div>
+<div id="name-reveal">
+  <div id="name-hbd">happy birthday</div>
+  <div id="name-main">Dinda</div>
+  <div id="name-date">07 . 05 . 2005</div>
+</div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>

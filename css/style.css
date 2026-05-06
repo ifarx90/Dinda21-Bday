@@ -1,0 +1,770 @@
+/* ============================================================
+   RESET & BASE
+============================================================ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --emerald: #2d6a4f;
+  --mint: #74c69d;
+  --lime: #b7e4c7;
+  --gold: #f4c542;
+  --gold-dark: #c9a227;
+  --cream: #fdfaf4;
+  --dark: #060a06;
+  --text-dim: rgba(255, 255, 255, 0.55);
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #e8ede8;
+  font-family: "DM Sans", sans-serif;
+  cursor: none;
+}
+
+/* ============================================================
+   CUSTOM CURSOR
+============================================================ */
+#cursor {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: #2d6a4f;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s ease;
+  mix-blend-mode: multiply;
+}
+
+/* ============================================================
+   FIRST OVERLAY
+============================================================ */
+#first-overlay {
+  position: fixed;
+  inset: 0;
+  background: #e8ede8;
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: none;
+  transition: opacity 0.8s ease;
+}
+
+#first-overlay.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#first-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: promptFloat 3s ease-in-out infinite;
+}
+
+#first-icon {
+  font-size: clamp(2.8rem, 8vw, 4.5rem);
+  filter: drop-shadow(0 4px 16px rgba(45, 106, 79, 0.15));
+  animation: iconPulse 2.5s ease-in-out infinite;
+}
+
+#first-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  font-style: italic;
+  font-weight: 400;
+  color: #1e2a1e;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+#first-sub {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(45, 106, 79, 0.55);
+  animation: subBlink 2s ease-in-out infinite;
+}
+
+@keyframes promptFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes iconPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes subBlink {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/* ============================================================
+   SCENE WRAPPER
+============================================================ */
+.scene {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease;
+}
+
+.scene.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
+   SCENE 1 — TYPING
+============================================================ */
+#scene1 {
+  background: #e8ede8;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Paper */
+#paper {
+  width: min(620px, 88vw);
+  max-height: 82vh;
+  background: #f4f7f1;
+  border-radius: 2px;
+  padding: clamp(32px, 6vw, 56px) clamp(28px, 6vw, 52px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 12px 40px rgba(0, 0, 0, 0.12),
+    0 32px 64px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+  scrollbar-width: none;
+  transform-origin: top center;
+  animation: paperUnfold 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+#paper::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes paperUnfold {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.05) translateY(-20px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+  }
+  60% {
+    opacity: 1;
+    transform: scaleY(1.02) translateY(2px);
+  }
+  80% {
+    transform: scaleY(0.99) translateY(-1px);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+/* grain texture — lebih kuat */
+#paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 2px;
+}
+
+/* dekoratif — lipatan sudut kanan atas */
+#paper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 28px 28px 0;
+  border-color: transparent #e8ede8 transparent transparent;
+  filter: drop-shadow(-2px 2px 3px rgba(0, 0, 0, 0.08));
+  z-index: 2;
+}
+
+/* garis dekoratif atas kertas */
+#paper-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+#paper-header::before,
+#paper-header::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(45, 106, 79, 0.2), transparent);
+}
+
+#paper-stamp {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(45, 106, 79, 0.35);
+  white-space: nowrap;
+}
+
+#paper-footer {
+  position: absolute;
+  bottom: clamp(20px, 4vw, 32px);
+  right: clamp(24px, 5vw, 44px);
+  z-index: 2;
+  opacity: 1;
+}
+
+#paper-from {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(45,106,79,0.35);
+}
+#typing-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Typed lines — dark on paper */
+.typed-line {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.1rem, 2.8vw, 1.45rem);
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(30, 42, 30, 0);
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+  transition: color 0.4s ease;
+  white-space: pre-wrap;
+  min-height: 1.85em;
+}
+
+.typed-line.visible {
+  color: rgba(30, 42, 30, 0.88);
+}
+
+.typed-line.dim {
+  color: rgba(30, 42, 30, 0.88);
+  transition: color 1.4s ease;
+}
+
+.typed-line.last-line {
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  color: rgba(30, 42, 30, 0) !important;
+  letter-spacing: 0.06em;
+}
+
+.typed-line.last-line.visible {
+  color: #2d6a4f !important;
+}
+
+/* blink cursor */
+.blink-cursor::after {
+  content: "|";
+  animation: blink 0.75s step-end infinite;
+  color: #2d6a4f;
+  margin-left: 2px;
+}
+
+/* gradient mask */
+#typing-container::before,
+#typing-container::after {
+  display: none;
+}
+
+/* Reveal button */
+#reveal-btn-area {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+#reveal-btn-area.hidden {
+  pointer-events: none;
+}
+
+#reveal-btn-area.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#reveal-btn {
+  background: transparent;
+  border: 1.5px solid rgba(45, 106, 79, 0.4);
+  color: #2d6a4f;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+  font-style: italic;
+  letter-spacing: 0.08em;
+  padding: 12px 32px;
+  border-radius: 2px;
+  cursor: none;
+  transition: all 0.3s ease;
+}
+
+#reveal-btn:hover {
+  background: rgba(45, 106, 79, 0.06);
+  border-color: #2d6a4f;
+}
+
+/* PIN overlay */
+#pin-overlay {
+  position: fixed;
+  inset: 0;
+  background: #f4f7f1;
+  z-index: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+#pin-overlay.hidden {
+  display: none;
+}
+
+#pin-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#pin-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#pin-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: cardFloat 3s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+#pin-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-style: italic;
+  color: rgba(30, 42, 30, 0.6);
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+#pin-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+  font-style: italic;
+  color: rgba(30, 42, 30, 0.5);
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+#pin-boxes {
+  display: flex;
+  gap: 10px;
+}
+
+.pin-box {
+  width: 58px;
+  height: 68px;
+  border: 2.5px solid rgba(45, 106, 79, 0.2);
+  border-radius: 16px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.8rem;
+  color: #2d6a4f;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow:
+    0 4px 12px rgba(45, 106, 79, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.pin-box.filled {
+  border-color: #f4c542;
+  background: linear-gradient(135deg, #fffbea, #fff9e0);
+  box-shadow:
+    0 6px 20px rgba(244, 197, 66, 0.25),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+  transform: scale(1.08);
+}
+
+.pin-box.active {
+  border-color: #2d6a4f;
+  box-shadow:
+    0 0 0 4px rgba(45, 106, 79, 0.12),
+    0 4px 12px rgba(45, 106, 79, 0.15);
+  transform: scale(1.05);
+}
+
+#pin-boxes {
+  display: flex;
+  gap: 14px;
+}
+
+#pin-error {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.8rem;
+  color: #c0392b;
+  letter-spacing: 0.08em;
+  min-height: 1.2em;
+  transition: opacity 0.3s ease;
+}
+
+#numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 20px;
+  width: min(280px, 80vw);
+}
+
+.numpad-key {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1.5px solid rgba(45, 106, 79, 0.2);
+  border-radius: 6px;
+  padding: 14px 0;
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.1rem;
+  color: #2d6a4f;
+  cursor: none;
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
+}
+
+.numpad-key:active {
+  background: rgba(45, 106, 79, 0.12);
+  transform: scale(0.95);
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-6px);
+  }
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+#pin-boxes.shake {
+  animation: shake 0.4s ease;
+}
+
+/* skip button — sesuaikan ke paper mode */
+#skip-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 32px;
+  background: transparent;
+  border: 1px solid rgba(30, 42, 30, 0.2);
+  color: rgba(30, 42, 30, 0.35);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 2px;
+  cursor: none;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+#skip-btn:hover {
+  color: rgba(30, 42, 30, 0.7);
+  border-color: rgba(30, 42, 30, 0.4);
+}
+
+/* ============================================================
+   SCENE 2 — BIRTHDAY EXPLOSION
+============================================================ */
+#scene2 {
+  background: #e8ede8;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* grain overlay scene 2 */
+#scene2::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* canvas for fireworks + confetti */
+#fx-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* parallax layer */
+#parallax-layer {
+  position: fixed;
+  inset: -60px;
+  pointer-events: none;
+  z-index: 0;
+  transition: transform 0.12s ease-out;
+}
+
+/* ---- NAME reveal ---- */
+#name-reveal {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#name-hbd {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.7rem, 2vw, 0.95rem);
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: #2d6a4f;
+  opacity: 0;
+  margin-bottom: 6px;
+  transition: opacity 0.8s ease;
+}
+
+#name-hbd.show {
+  opacity: 0.75;
+}
+
+#name-main {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 400;
+  font-size: clamp(3.5rem, 14vw, 9rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: #1e2a1e;
+  opacity: 0;
+  transform: scale(0.6) translateY(30px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(0 4px 24px rgba(45, 106, 79, 0.18));
+}
+
+#name-main.pop {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+#name-sub {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.65rem, 1.8vw, 0.85rem);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #2d6a4f;
+  opacity: 0;
+  margin-top: 8px;
+  transition: opacity 1s ease 0.5s;
+}
+#name-sub.show {
+  opacity: 0.6;
+}
+
+/* watermark tahun */
+#year-watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(12rem, 55vw, 42rem);
+  font-weight: 300;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(45, 106, 79, 0.12);
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1.8s ease 0.3s, transform 1.8s ease 0.3s;
+  white-space: nowrap;
+  user-select: none;
+  line-height: 1;
+}
+
+#year-watermark.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* tanggal */
+#name-date {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.6rem, 1.5vw, 0.78rem);
+  letter-spacing: 0.42em;
+  color: #2d6a4f;
+  opacity: 0;
+  margin-top: 16px;
+  transition: opacity 1s ease 1.4s;
+}
+
+#name-date.show {
+  opacity: 0.45;
+}
+
+/* shockwave */
+.shockwave {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(45, 106, 79, 0.4);
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: none;
+  z-index: 5;
+  animation: shockwaveAnim 1s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+}
+
+@keyframes shockwaveAnim {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(60);
+    opacity: 0;
+  }
+}
+
+/* ---- MUSIC BUTTON ---- */
+#music-btn {
+  position: fixed;
+  top: 24px;
+  right: 28px;
+  z-index: 200;
+  background: rgba(45, 106, 79, 0.08);
+  border: 1px solid rgba(45, 106, 79, 0.22);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: none;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+#music-btn.show {
+  opacity: 1;
+}
+#music-btn:hover {
+  background: rgba(45, 106, 79, 0.15);
+  border-color: #2d6a4f;
+}
+#music-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: #2d6a4f;
+}
+
+/* ============================================================
+   TRANSITION OVERLAY
+============================================================ */
+#transition-overlay {
+  position: fixed;
+  inset: 0;
+  background: #f4f7f1;
+  z-index: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+#transition-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
