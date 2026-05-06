@@ -2,7 +2,7 @@
 // WEB AUDIO — Cinematic ambient music
 // ============================================================
 // ---- AUDIO FILE ----
-const bgAudio = new Audio('https://files.catbox.moe/7nmb93.mp3');
+const bgAudio = new Audio("https://files.catbox.moe/7nmb93.mp3");
 bgAudio.loop = true;
 bgAudio.volume = 0.3;
 
@@ -171,7 +171,7 @@ function showPinArea() {
   const btnArea = document.getElementById("reveal-btn-area");
   btnArea.classList.remove("hidden");
   setTimeout(() => btnArea.classList.add("show"), 50);
-  const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  const isMobile = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
   if (isMobile) setTimeout(() => showNumpad(), 400);
   document.getElementById("reveal-btn").addEventListener(
     "click",
@@ -180,15 +180,17 @@ function showPinArea() {
       document.getElementById("paper").style.transition = "opacity 0.5s ease";
       document.getElementById("paper").style.opacity = "0";
 
-    setTimeout(() => {
-  const pinOverlay = document.getElementById('pin-overlay');
-  pinOverlay.style.display = 'flex';
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    pinOverlay.classList.add('show');
-  }));
-  document.addEventListener('keydown', onPinKeydown);
-  showNumpad();
-}, 500);
+      setTimeout(() => {
+        const pinOverlay = document.getElementById("pin-overlay");
+        pinOverlay.style.display = "flex";
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => {
+            pinOverlay.classList.add("show");
+          }),
+        );
+        document.addEventListener("keydown", onPinKeydown);
+        showNumpad();
+      }, 500);
     },
     { once: true },
   );
@@ -224,26 +226,26 @@ function onPinClick(e) {
 
 // Virtual numpad — muncul otomatis di mobile
 function showNumpad() {
-  const existing = document.getElementById('numpad');
+  const existing = document.getElementById("numpad");
   if (existing) return;
 
-  const numpad = document.createElement('div');
-  numpad.id = 'numpad';
-  const keys = ['1','2','3','4','5','6','7','8','9','←','0','✓'];
-  keys.forEach(k => {
-    const btn = document.createElement('button');
-    btn.className = 'numpad-key';
+  const numpad = document.createElement("div");
+  numpad.id = "numpad";
+  const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "←", "0", "✓"];
+  keys.forEach((k) => {
+    const btn = document.createElement("button");
+    btn.className = "numpad-key";
     btn.textContent = k;
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener("click", (e) => {
       e.stopPropagation();
       if (pinLocked) return;
-      if (k === '←') {
+      if (k === "←") {
         if (pinInput.length > 0) {
           pinInput = pinInput.slice(0, -1);
           updatePinBoxes();
           clearPinError();
         }
-      } else if (k === '✓') {
+      } else if (k === "✓") {
         if (pinInput.length === 4) validatePin();
       } else {
         if (pinInput.length < 4) {
@@ -255,7 +257,7 @@ function showNumpad() {
     });
     numpad.appendChild(btn);
   });
-  document.getElementById('pin-card').appendChild(numpad);
+  document.getElementById("pin-card").appendChild(numpad);
 }
 
 function updatePinBoxes() {
@@ -335,28 +337,28 @@ function initScene2() {
 
   // nama muncul setelah burst sedikit settle
   // shockwave saat burst
-setTimeout(() => {
-  const sw = document.createElement('div');
-  sw.className = 'shockwave';
-  document.getElementById('scene2').appendChild(sw);
-  setTimeout(() => sw.remove(), 1000);
-}, 100);
+  setTimeout(() => {
+    const sw = document.createElement("div");
+    sw.className = "shockwave";
+    document.getElementById("scene2").appendChild(sw);
+    setTimeout(() => sw.remove(), 1000);
+  }, 100);
 
-// watermark tahun
-setTimeout(() => {
-  document.getElementById('year-watermark').classList.add('show');
-}, 400);
+  // watermark tahun
+  setTimeout(() => {
+    document.getElementById("year-watermark").classList.add("show");
+  }, 400);
 
-// nama
-setTimeout(() => {
-  document.getElementById('name-hbd').classList.add('show');
-  document.getElementById('name-main').classList.add('pop');
-}, 800);
+  // nama
+  setTimeout(() => {
+    document.getElementById("name-hbd").classList.add("show");
+    document.getElementById("name-main").classList.add("pop");
+  }, 800);
 
-// tanggal
-setTimeout(() => {
-  document.getElementById('name-date').classList.add('show');
-}, 1000);
+  // tanggal
+  setTimeout(() => {
+    document.getElementById("name-date").classList.add("show");
+  }, 1000);
 
   setTimeout(() => document.getElementById("music-btn").classList.add("show"), 1200);
 
@@ -432,7 +434,7 @@ function launchFirework() {
 }
 
 // ---- CONFETTI ----
-const SHAPES = ['rect', 'circle', 'line'];
+const SHAPES = ["rect", "circle", "line"];
 function spawnConfettiBurst(count) {
   for (let i = 0; i < count; i++) {
     confetti.push({
@@ -447,7 +449,7 @@ function spawnConfettiBurst(count) {
       alpha: 1,
       wave: rnd(0, Math.PI * 2),
       waveSpeed: rnd(0.02, 0.06),
-      shape: SHAPES[Math.floor(Math.random() * SHAPES.length)]
+      shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
     });
   }
 }
@@ -464,10 +466,13 @@ document.addEventListener("mousemove", (e) => {
   mouseX = e.clientX;
   mouseY = e.clientY;
 
-  const cur = document.getElementById("cursor");
-  cur.style.left = e.clientX + "px";
-  cur.style.top = e.clientY + "px";
-  cur.style.zIndex = "9999";
+  const isMobile = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  if (!isMobile) {
+    const cur = document.getElementById("cursor");
+    cur.style.left = e.clientX + "px";
+    cur.style.top = e.clientY + "px";
+    cur.style.zIndex = "10000";
+  }
 
   if (!document.getElementById("scene2").classList.contains("hidden")) {
     for (let i = 0; i < 3; i++) {

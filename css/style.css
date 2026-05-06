@@ -32,6 +32,7 @@ html, body {
   html, body { cursor: auto !important; }
   #cursor { display: none !important; }
   * { cursor: auto !important; }
+  .numpad-key { cursor: pointer !important; }
 }
 
 /* ============================================================
@@ -255,10 +256,10 @@ html, body {
 }
 
 #paper-footer {
-  position: absolute;
-  bottom: clamp(20px, 4vw, 32px);
-  right: clamp(24px, 5vw, 44px);
-  z-index: 2;
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  z-index: 50;
   opacity: 1;
 }
 
